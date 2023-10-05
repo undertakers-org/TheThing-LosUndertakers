@@ -76,9 +76,9 @@ const GamesLobby = () => {
       <div className="listContainer-GamesLobby">
         <h2 className="titleContainer-GamesLobby">Lista de Jugadores:</h2>
         <div className="playersInfo">
-          {playersList.map((player) => (
-            <div key={player.user_id} className="playerInfo">
-               {player.nickname}
+          {playersList.map((player_nickname, index) => (
+            <div key={index} className="playerInfo">
+               {player_nickname}
             </div>
           ))}
         </div>

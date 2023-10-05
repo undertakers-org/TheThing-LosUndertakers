@@ -2,6 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 from main import app  # importamos la app de nuestro back
 
+
 # Las fixtures son como datos que vamos a usar en los tests, son reutilizables.
 
 # Una fixture para poder reusar el cliente en varios tests
@@ -9,15 +10,18 @@ from main import app  # importamos la app de nuestro back
 def client():
     return TestClient(app)
 
+
 # fixture para la creación de un usuario user_one
 @pytest.fixture
 def sample_user_data_one():
     return {"nickname": "user_one"}
 
+
 # fixture para la creación de un usuario user_two
 @pytest.fixture
 def sample_user_data_two():
     return {"nickname": "user_two"}
+
 
 # Una fixture que tiene la configuración necesaria de una partida para testear la creación de partida
 @pytest.fixture
@@ -29,6 +33,7 @@ def sample_game_data_one():
         "id_creator": 1
     }
 
+
 # fixture para creación de partida tal que de error, ya que tiene el mismo nombre que la game_data_one
 @pytest.fixture
 def sample_game_data_two():
@@ -39,6 +44,7 @@ def sample_game_data_two():
         "id_creator": 2
     }
 
+
 # Esta fixture depende de sample_user_data_one,
 # asegurando que el usuario user_one se crea antes que user_two
 @pytest.fixture
@@ -47,6 +53,7 @@ def sample_user_one_created(client, sample_user_data_one):
     assert response.status_code == 200
     return response.json()
 
+
 # Esta fixture depende de sample_user_one_created,
 # asegurando que el usuario user_two se crea después de user_one
 @pytest.fixture
@@ -54,6 +61,7 @@ def sample_user_two_created(client, sample_user_data_two, sample_user_one_create
     response = client.post("/users/", json=sample_user_data_two)
     assert response.status_code == 200
     return response.json()
+
 
 def test_all(client, sample_user_one_created, sample_user_two_created, sample_game_data_one, sample_game_data_two):
     # user_data_one crea partida con datos game_data_one, debería ser exitoso con código 200
@@ -96,7 +104,6 @@ def test_all(client, sample_user_one_created, sample_user_two_created, sample_ga
     # usuario creador intenta iniciar la partida, debería ser exitoso
     start_response = client.post(f"/games/{game_name}/start/1")
     assert start_response.status_code == 200
-
 
 # Este test necesita tener instalado pytest: pip install pytest httpx
 # y se ejecuta abriendo una terminal en el directorio donde está este archivo (test_app.py)

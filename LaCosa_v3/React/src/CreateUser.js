@@ -27,7 +27,7 @@ const CreateUser = () => {
   const handleSubmit = async (event) => {
     event.preventDefault(); // esto evita que la página se recargue cuando se envíe el formulario
     try {
-      const response = await api.post('/users/', { nickname });
+      const response = await api.post(`/users/?nickname=${nickname}`);
       alert('Usuario creado exitosamente');
       setNickname(''); // Limpiar el valor del campo de usuario para que no quede el nickname
       navigate(`/GamesHome/${response.data.user_id}`); // Navegar a JoinGame usando directamente el ID del jugador creado
